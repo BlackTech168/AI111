@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+# 生成24个月日期
+dates = pd.date_range(start='2022-01-01', end='2023-12-31', freq='D')
+n = len(dates)
+
+# 生成模拟特征
+np.random.seed(42)
+data = pd.DataFrame({
+    '日期': dates,
+    '价格': np.random.normal(30, 5, n).clip(20,40),  # 价格在20-40元波动
+    '是否促销': np.random.choice([0,1], n, p=[0.8,0.2]),
+    '节假日': np.where(dates.month.isin([1,2,5,10]), 1, 0),  # 假设1/2/5/10月为旺季
+})
+
+# 生成销量（带季节性和价格影响）
+base_sales = 100 + 20*np.sin(2*np.pi*dates.dayofyear/365)  # 季节性波动
+data['销量'] = (base_sales 
+               - 3*data['价格']  # 价格弹性
+               + 50*data['是否促销'] 
+               + 30*data['节假日'] 
+               + np.random.normal(0, 10, n)  # 随机噪声
+              ).astype(int).clip(0)
+
+data.to_csv("sales_data.csv", index=False)

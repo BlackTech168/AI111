@@ -1,0 +1,15 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 加载示例数据集（模拟超市销售数据）
+data = pd.read_csv("sales_data.csv")  # 字段：日期, 销量, 价格, 是否促销, 节假日
+data['日期'] = pd.to_datetime(data['日期'])
+
+# 可视化销量趋势
+plt.figure(figsize=(12,4))
+plt.plot(data['日期'], data['销量'], label='实际销量')
+plt.title("近两年销量趋势分析")
+plt.xlabel("日期")
+plt.ylabel("销量（件）")
+plt.grid(True)
+plt.show()

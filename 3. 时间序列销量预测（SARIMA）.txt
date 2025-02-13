@@ -1,0 +1,15 @@
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+# 按周聚合数据
+weekly_data = data.resample('W', on='日期').sum()
+
+# 训练SARIMA模型（参数需根据数据调整）
+model_sarima = SARIMAX(weekly_data['销量'],
+                      order=(1,1,1),        # (p,d,q)
+                      seasonal_order=(1,1,1,52))  # (P,D,Q,周期)
+results = model_sarima.fit()
+
+# 预测未来4周销量
+forecast = results.get_forecast(steps=4)
+print("未来四周销量预测：")
+print(forecast.predicted_mean.round())

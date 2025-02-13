@@ -1,0 +1,13 @@
+import numpy as np
+
+# 定义利润计算函数（假设成本为15元/件）
+def calc_profit(price):
+    predicted_sales = model.predict([[price, 0, 0]])[0]  # 假设无促销/节假日
+    return (price - 15) * predicted_sales
+
+# 寻找最优价格（网格搜索）
+prices = np.linspace(20, 40, 50)
+profits = [calc_profit(p) for p in prices]
+optimal_price = prices[np.argmax(profits)]
+
+print(f"理论最优定价：{optimal_price:.1f}元（预期利润{max(profits):.0f}元）")

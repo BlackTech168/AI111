@@ -1,0 +1,13 @@
+from sklearn.linear_model import LinearRegression
+
+# 构建特征：价格、促销、节假日
+X = data[['价格', '是否促销', '节假日']]
+y = data['销量']
+
+# 训练线性回归模型
+model = LinearRegression()
+model.fit(X, y)
+
+# 输出价格弹性系数（经济学意义）
+price_coef = model.coef_[0]
+print(f"价格弹性系数：{price_coef:.2f}（价格每上涨1元，销量减少约{abs(price_coef):.0f}件）")
